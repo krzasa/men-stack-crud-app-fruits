@@ -21,8 +21,8 @@ app.get("/", async (req, res) => {
   });
 // POST /fruits
 app.get('/fruits', async (req,res) =>{
-    const foundFruits = await Fruit.find()
-    res.send(foundFruits)
+    const allFruits = await Fruit.find()
+    res.render("fruits/home.ejs", {fruits: allFruits })
 })
 app.post("/fruits", async (req, res) => {
     console.log(req.body);
@@ -33,11 +33,17 @@ app.post("/fruits", async (req, res) => {
       }
       await Fruit.create(req.body);
     // res.redirect("fruits/new");
-    res.redirect('/fruits')
+    res.redirect('/fruits' )
   });
 app.get("/fruits/new", (req, res) => {
     // res.send("This route sends the user a form page!");
     res.render("fruits/new.ejs");
+  })
+  app.get('/fruits/:fruitId', async (req,res) =>{
+    const foundFruit = await Fruit.findById(req.params.fruitId)
+    res.render("fruits/show.ejs", {
+      fruit:foundFruit
+    })
   })
 
 
